@@ -13,8 +13,8 @@ import marcelo.com.br.jumper.graphic.Tela;
 public class Passaro {
 
     private static final Paint vermelho = Cores.getCorDoPassaro();
-    private static final int X = 100 / 2;
-    private static final int RAIO = 50 / 2;
+    public static final int X = 100 / 2;
+    public static final int RAIO = 50 / 2;
     private int altura;
     private Tela tela;
 
@@ -39,5 +39,9 @@ public class Passaro {
         if(altura > RAIO) {
             altura -= 75;
         }
+    }
+
+    public int getAltura() {
+        return this.altura;
     }
 }

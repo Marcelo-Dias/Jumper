@@ -12,6 +12,7 @@ import android.view.View;
 import marcelo.com.br.jumper.R;
 import marcelo.com.br.jumper.elements.Cano;
 import marcelo.com.br.jumper.elements.Canos;
+import marcelo.com.br.jumper.elements.GameOver;
 import marcelo.com.br.jumper.elements.Passaro;
 import marcelo.com.br.jumper.elements.Pontuacao;
 import marcelo.com.br.jumper.graphic.Tela;
@@ -63,6 +64,11 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
             canos.move();
 
             pontuacao.desenhaNo(canvas);
+
+            if(new VerificadorDeColisao(passaro, canos).temColisao()) {
+                new GameOver(tela).desenhaNo(canvas);
+                isRunning = false;
+            }
 
             holder.unlockCanvasAndPost(canvas);
         }
