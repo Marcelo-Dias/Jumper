@@ -23,6 +23,7 @@ import marcelo.com.br.jumper.graphic.Tela;
 
 public class Game extends SurfaceView implements Runnable, View.OnTouchListener {
 
+    private Context context;
     private boolean isRunning = true;
     private final SurfaceHolder holder = getHolder();
     private Canvas canvas;
@@ -31,20 +32,23 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     private Bitmap background;
     private Tela tela;
     private Pontuacao pontuacao;
+    private Som som;
 
     public Game(Context context) {
         super(context);
+        this.context = context;
 
         tela = new Tela(context);
+        this.som = new Som(context);
 
         inicializaElementos();
         setOnTouchListener(this);
     }
 
     private void inicializaElementos() {
-        this.pontuacao = new Pontuacao();
-        this.passaro = new Passaro(tela);
-        this.canos = new Canos(tela, pontuacao);
+        this.pontuacao = new Pontuacao(som);
+        this.passaro = new Passaro(tela, context, som);
+        this.canos = new Canos(tela, pontuacao, context);
         Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         this.background = Bitmap.createScaledBitmap(back, back.getWidth(), tela.getAltura(), false);
     }
@@ -66,6 +70,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
             pontuacao.desenhaNo(canvas);
 
             if(new VerificadorDeColisao(passaro, canos).temColisao()) {
+                som.play(Som.COLISAO);
                 new GameOver(tela).desenhaNo(canvas);
                 isRunning = false;
             }

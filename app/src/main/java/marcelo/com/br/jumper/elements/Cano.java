@@ -1,8 +1,12 @@
 package marcelo.com.br.jumper.elements;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import marcelo.com.br.jumper.R;
 import marcelo.com.br.jumper.graphic.Cores;
 import marcelo.com.br.jumper.graphic.Tela;
 
@@ -12,6 +16,8 @@ import marcelo.com.br.jumper.graphic.Tela;
 
 public class Cano {
 
+    private Bitmap canoSuperior;
+    private Bitmap canoInferior;
     private Tela tela;
     private static final int TAMANHO_DO_CANO = 250 / 2;
     private static final int LARGURA_DO_CANO = 100 / 2;
@@ -20,11 +26,14 @@ public class Cano {
     private int posicao;
     private final Paint verde = Cores.getCorDoCano();
 
-    public Cano(Tela tela, int posicao){
+    public Cano(Tela tela, int posicao, Context context){
         this.tela = tela;
         this.posicao = posicao;
         this.alturaDoCanoInferior = tela.getAltura() - TAMANHO_DO_CANO - valorAleatorio();
         this.alturaDoCanoSuperior = 0 + TAMANHO_DO_CANO + valorAleatorio();
+        Bitmap bp = BitmapFactory.decodeResource(context.getResources(), R.drawable.cano);
+        this.canoInferior = Bitmap.createScaledBitmap(bp, LARGURA_DO_CANO, this.alturaDoCanoInferior, false);
+        this.canoSuperior = Bitmap.createScaledBitmap(bp, LARGURA_DO_CANO, this.alturaDoCanoSuperior, false);
     }
 
     public void desenhaNo(Canvas canvas){
@@ -33,11 +42,13 @@ public class Cano {
     }
 
     public void desenhaCanoSuperiorNo(Canvas canvas) {
-        canvas.drawRect(posicao, 0, posicao + LARGURA_DO_CANO, alturaDoCanoSuperior, verde);
+        //canvas.drawRect(posicao, 0, posicao + LARGURA_DO_CANO, alturaDoCanoSuperior, verde);
+        canvas.drawBitmap(canoSuperior, posicao, 0, null);
     }
 
     public void desenhaCanoInferiorNo(Canvas canvas) {
-        canvas.drawRect(posicao, alturaDoCanoInferior, posicao + LARGURA_DO_CANO, tela.getAltura(), verde);
+        //canvas.drawRect(posicao, alturaDoCanoInferior, posicao + LARGURA_DO_CANO, tela.getAltura(), verde);
+        canvas.drawBitmap(canoInferior, posicao, alturaDoCanoInferior, null);
     }
 
     public void move() {
